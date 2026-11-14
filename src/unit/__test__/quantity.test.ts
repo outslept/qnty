@@ -1,45 +1,105 @@
 import { describe, expect, expectTypeOf, it } from "vite-plus/test";
 import {
+  Absement,
   Acceleration,
+  AmountOfSubstance,
   AngularAcceleration,
   AngularMomentum,
   AngularVelocity,
   Area,
   AreaDensity,
   CatalyticActivity,
+  CatalyticEfficiency,
   Compressibility,
+  Crackle,
+  Dimensionless,
   DynamicViscosity,
   ElectricCharge,
+  ElectricChargeDensity,
+  ElectricCurrent,
   ElectricCurrentDensity,
+  ElectricDisplacement,
   ElectricFieldStrength,
   ElectricalCapacitance,
   ElectricalConductance,
+  ElectricalConductivity,
   ElectricalInductance,
   ElectricalResistance,
+  ElectricalResistivity,
+  ElectronMobility,
   Energy,
   Entropy,
   Force,
   Frequency,
+  FrequencyDrift,
+  FuelEfficiency,
   Illuminance,
   Irradiance,
+  Jerk,
+  Jounce,
   Length,
+  LinearChargeDensity,
+  LinearDensity,
+  Luminance,
+  LuminousEfficiency,
+  LuminousEnergy,
+  LuminousExposure,
   LuminousFlux,
+  LuminousIntensity,
+  MagneticDipoleMoment,
   MagneticFlux,
   MagneticFluxDensity,
+  MagneticMoment,
+  MagneticPermeability,
+  MagneticReluctance,
+  MagneticRigidity,
+  MagneticSusceptibility,
+  Magnetization,
   Mass,
+  MassFlowRate,
+  Memory,
+  Molality,
+  MolarConductivity,
+  MolarEnergy,
+  MolarEntropy,
+  MolarMass,
+  MolarVolume,
+  Molarity,
+  MomentOfInertia,
   Momentum,
+  Permittivity,
+  PlaneAngle,
+  Pop,
   Power,
+  PowerDensity,
   Pressure,
+  Radiance,
+  RadiantIntensity,
   RadiationDose,
+  RadiationDoseRate,
+  ReactionRate,
+  SolidAngle,
+  SpecificAngularMomentum,
   SpecificHeat,
+  SpecificVolume,
+  SpectralIntensity,
+  SpectralRadiance,
   SurfaceTension,
+  Temperature,
+  ThermalConductivity,
+  ThermalExpansionCoefficient,
+  ThermalGradient,
+  ThermalResistance,
   Time,
   Velocity,
   Voltage,
   Volume,
   VolumeDensity,
+  VolumetricFlow,
   Wavenumber,
+  Yank,
   amperes,
+  bits,
   candelas,
   kelvin,
   kilograms,
@@ -51,61 +111,118 @@ import {
 } from "../../index.ts";
 
 describe("Physical quantities", () => {
-  it("matches base and derived dimensional equations at runtime and type level", () => {
+  it("matches all base and derived dimensional equations at runtime and type level", () => {
+    expect(Dimensionless.unit).toEqual({});
     expect(Length).toEqual(meters);
     expect(Mass).toEqual(kilograms);
     expect(Time).toEqual(seconds);
+    expect(ElectricCurrent).toEqual(amperes);
+    expect(Temperature).toEqual(kelvin);
+    expect(AmountOfSubstance).toEqual(moles);
+    expect(LuminousIntensity).toEqual(candelas);
+    expect(Memory).toEqual(bits);
+    expect(PlaneAngle).toEqual(radians);
+    expect(SolidAngle).toEqual(steradians);
 
     expect(Frequency).toEqual(seconds.inverse());
     expectTypeOf(Frequency).toEqualTypeOf(seconds.inverse());
-
+    expect(FrequencyDrift).toEqual(seconds.pow(-2));
+    expect(FuelEfficiency).toEqual(meters.pow(-2));
     expect(Wavenumber).toEqual(meters.inverse());
     expect(Area).toEqual(meters.squared());
     expect(Volume).toEqual(meters.cubed());
+    expect(Absement).toEqual(meters.times(seconds));
 
     expect(Velocity).toEqual(meters.per(seconds));
     expect(Acceleration).toEqual(Velocity.per(seconds));
+    expect(Jerk).toEqual(Acceleration.per(seconds));
+    expect(Jounce).toEqual(Jerk.per(seconds));
+    expect(Crackle).toEqual(Jounce.per(seconds));
+    expect(Pop).toEqual(Crackle.per(seconds));
+    expect(VolumetricFlow).toEqual(Volume.per(seconds));
+    expect(MassFlowRate).toEqual(kilograms.per(seconds));
+
+    expect(LinearDensity).toEqual(kilograms.per(meters));
+    expect(AreaDensity).toEqual(kilograms.per(Area));
+    expect(VolumeDensity).toEqual(kilograms.per(Volume));
+    expect(SpecificVolume).toEqual(Volume.per(kilograms));
+
     expect(Force).toEqual(kilograms.times(Acceleration));
     expectTypeOf(Force).toEqualTypeOf(kilograms.times(Acceleration));
-
+    expect(Yank).toEqual(Force.per(seconds));
     expect(Pressure).toEqual(Force.per(Area));
     expect(Compressibility).toEqual(Pressure.inverse());
     expect(DynamicViscosity).toEqual(Pressure.times(seconds));
     expect(SurfaceTension).toEqual(Force.per(meters));
     expect(Momentum).toEqual(Force.times(seconds));
+    expect(MomentOfInertia).toEqual(kilograms.times(Area));
+    expect(AngularMomentum).toEqual(Momentum.times(meters));
+    expect(SpecificAngularMomentum).toEqual(AngularMomentum.per(kilograms));
 
     expect(Energy).toEqual(Force.times(meters));
     expectTypeOf(Energy).toEqualTypeOf(Force.times(meters));
-
     expect(Power).toEqual(Energy.per(seconds));
+    expect(PowerDensity).toEqual(Power.per(Volume));
     expect(Irradiance).toEqual(Power.per(Area));
-    expect(AreaDensity).toEqual(kilograms.per(Area));
-    expect(VolumeDensity).toEqual(kilograms.per(Volume));
 
     expect(ElectricCharge).toEqual(amperes.times(seconds));
+    expect(LinearChargeDensity).toEqual(ElectricCharge.per(meters));
+    expect(ElectricChargeDensity).toEqual(ElectricCharge.per(Volume));
     expect(ElectricCurrentDensity).toEqual(amperes.per(Area));
+    expect(ElectricDisplacement).toEqual(ElectricCharge.per(Area));
     expect(Voltage).toEqual(Power.per(amperes));
     expectTypeOf(Voltage).toEqualTypeOf(Power.per(amperes));
-
     expect(ElectricFieldStrength).toEqual(Voltage.per(meters));
     expect(ElectricalResistance).toEqual(Voltage.per(amperes));
+    expect(ElectricalResistivity).toEqual(ElectricalResistance.times(meters));
     expect(ElectricalConductance).toEqual(ElectricalResistance.inverse());
+    expect(ElectricalConductivity).toEqual(ElectricalConductance.per(meters));
     expect(ElectricalCapacitance).toEqual(ElectricCharge.per(Voltage));
+    expect(Permittivity).toEqual(ElectricalCapacitance.per(meters));
 
     expect(MagneticFlux).toEqual(Voltage.times(seconds));
     expect(MagneticFluxDensity).toEqual(MagneticFlux.per(Area));
     expect(ElectricalInductance).toEqual(MagneticFlux.per(amperes));
+    expect(MagneticPermeability).toEqual(ElectricalInductance.per(meters));
+    expect(Magnetization).toEqual(amperes.per(meters));
+    expect(MagneticReluctance).toEqual(ElectricalInductance.inverse());
+    expect(MagneticMoment).toEqual(MagneticFlux.times(meters));
+    expect(MagneticRigidity).toEqual(MagneticFluxDensity.times(meters));
+    expect(MagneticDipoleMoment).toEqual(Energy.per(MagneticFluxDensity));
+    expect(MagneticSusceptibility).toEqual(Magnetization.per(MagneticFluxDensity));
+    expect(ElectronMobility).toEqual(Area.per(Voltage.times(seconds)));
 
     expect(Entropy).toEqual(Energy.per(kelvin));
     expect(SpecificHeat).toEqual(Entropy.per(kilograms));
+    expect(ThermalConductivity).toEqual(Power.per(meters.times(kelvin)));
+    expect(ThermalResistance).toEqual(kelvin.per(Power));
+    expect(ThermalExpansionCoefficient).toEqual(kelvin.inverse());
+    expect(ThermalGradient).toEqual(kelvin.per(meters));
+    expect(MolarEntropy).toEqual(Entropy.per(moles));
+    expect(MolarEnergy).toEqual(Energy.per(moles));
+    expect(Molarity).toEqual(moles.per(Volume));
+    expect(MolarVolume).toEqual(Volume.per(moles));
+    expect(Molality).toEqual(moles.per(kilograms));
+    expect(MolarMass).toEqual(kilograms.per(moles));
+    expect(MolarConductivity).toEqual(ElectricalConductance.times(Area).per(moles));
     expect(CatalyticActivity).toEqual(moles.per(seconds));
-    expect(RadiationDose).toEqual(Energy.per(kilograms));
+    expect(CatalyticEfficiency).toEqual(MolarVolume.per(seconds));
+    expect(ReactionRate).toEqual(Molarity.per(seconds));
 
-    expect(AngularMomentum).toEqual(Momentum.times(meters));
+    expect(RadiationDose).toEqual(Energy.per(kilograms));
+    expect(RadiationDoseRate).toEqual(RadiationDose.per(seconds));
     expect(AngularVelocity).toEqual(radians.per(seconds));
     expect(AngularAcceleration).toEqual(AngularVelocity.per(seconds));
 
+    expect(Luminance).toEqual(candelas.per(Area));
     expect(LuminousFlux).toEqual(candelas.times(steradians));
     expect(Illuminance).toEqual(LuminousFlux.per(Area));
+    expect(LuminousEnergy).toEqual(LuminousFlux.times(seconds));
+    expect(LuminousExposure).toEqual(Illuminance.times(seconds));
+    expect(LuminousEfficiency).toEqual(LuminousFlux.per(Power));
+    expect(RadiantIntensity).toEqual(Power.per(steradians));
+    expect(SpectralIntensity).toEqual(RadiantIntensity.per(meters));
+    expect(Radiance).toEqual(RadiantIntensity.per(Area));
+    expect(SpectralRadiance).toEqual(Radiance.per(meters));
   });
 });
