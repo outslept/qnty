@@ -11,8 +11,6 @@ Type-level Units of Measure for TypeScript - combining **F#-style string unit ex
 - **Compile-Time Checked Conversions** - convert between metric, imperial, US customary, and affine temperature scales (`degC`, `degF`, `K`) while rejecting incompatible dimensions at compile time.
 - **90+ Physical Quantities & Predefined Units** - SI base/derived units, metric & binary prefixes (`kilo`, `milli`, `kibi`, `gibi`), common/imperial/US customary units, and dimensional quantities (`Velocity`, `Force`, `Energy`, `Voltage`, etc.).
 
----
-
 ## Quick Start
 
 ### 1. Zero-Cost Primitive API (`Qty` / `Unit`)
@@ -47,8 +45,6 @@ console.log(format(force, "N", (n) => n.toFixed(1))); // "817.1 N"
 // sqrt(qty(9, "m"));                    // Error: odd exponent cannot take square root
 // to(speed, "m/s", "kg");               // Error: incompatible dimensions
 ```
-
----
 
 ### 2. OOP API (`Measure`)
 
@@ -90,8 +86,6 @@ console.log(weight.in("N")); // "784.532 N"
 const rawForce = weight.toQty(); // Unit<"N">
 ```
 
----
-
 ## Predefined Units & Prefixes
 
 ```ts
@@ -124,8 +118,6 @@ const angle = atan2(Measure.of(10, meters), Measure.of(10, meters));
 console.log(angle.valueIn(degrees)); // 45
 console.log(cos(angle).value); // 0.7071067811865476
 ```
-
----
 
 ## Physical Quantities
 
