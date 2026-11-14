@@ -84,18 +84,22 @@ type ExpandTerm<K, E extends number, Map> = K extends keyof Map
   ? PowUnit<Map[K], E>
   : CleanUnit<{ readonly [P in K & string]: E }>;
 
-type MapUnitVec<U, Map, Acc = Dimensionless> = [keyof U] extends [never]
-  ? Acc
-  : LastKey<keyof U> extends infer K
-    ? K extends keyof U
-      ? MultiplyUnits<Acc, ExpandTerm<K, U[K] & number, Map>> extends infer Next
-        ? MapUnitVec<Omit<U, K>, Map, Next>
-        : never
-      : Acc
-    : Acc;
+type MapUnitVec<U, Map, Acc = Dimensionless> = string extends keyof U
+  ? Dimensionless
+  : [keyof U] extends [never]
+    ? Acc
+    : LastKey<keyof U> extends infer K
+      ? K extends keyof U
+        ? MultiplyUnits<Acc, ExpandTerm<K, U[K] & number, Map>> extends infer Next
+          ? MapUnitVec<Omit<U, K>, Map, Next>
+          : never
+        : Acc
+      : Acc;
 
 export type ResolveUnit<U> = MapUnitVec<U, CoherentSIAliases>;
-export type ResolveUnitStr<S extends string> = ResolveUnit<ParseUnit<S>>;
+export type ResolveUnitStr<S extends string> = string extends S
+  ? Dimensionless
+  : ResolveUnit<ParseUnit<S>>;
 export type CanonicalDim<U> = MapUnitVec<U, ScaledUnitDims>;
 
 export type CompatibleUnits<A, B> =

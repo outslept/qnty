@@ -11,11 +11,10 @@ import type {
 } from "./algebra.ts";
 import { type ParseUnit } from "./format.ts";
 import {
-  type CanonicalDim,
   type CompatibleUnits,
   convertScalar,
-  type ResolveUnit,
   type ResolveUnitStr,
+  type ScaledUnitDims,
 } from "./unitSystem.ts";
 
 declare const __unit: unique symbol;
@@ -27,18 +26,18 @@ export type Qty<U = Dimensionless, N = number> = N & { readonly [__unit]: U };
 export type Unit<S extends string, N = number> = Qty<ResolveUnitStr<S>, N>;
 
 // Reject mixed scales along the same physical axis (e.g. multiplying 'km' by 'm' without converting first)
-type SingleAxis<U> = keyof CanonicalDim<{ readonly [P in keyof U]: 1 }>;
+type AxisOfKey<K> = K extends keyof ScaledUnitDims ? keyof ScaledUnitDims[K] : K;
+type AxesOf<U> = AxisOfKey<keyof U>;
+
 type HasScaleConflict<A, B> = [keyof A & keyof B] extends [never]
-  ? [SingleAxis<A> & SingleAxis<B>] extends [never]
+  ? [AxesOf<A> & AxesOf<B>] extends [never]
     ? false
     : true
   : false;
 
-export type SafeMul<A, B> =
-  HasScaleConflict<A, B> extends true ? never : ResolveUnit<MultiplyUnits<A, B>>;
+export type SafeMul<A, B> = HasScaleConflict<A, B> extends true ? never : MultiplyUnits<A, B>;
 
-export type SafeDiv<A, B> =
-  HasScaleConflict<A, B> extends true ? never : ResolveUnit<DivideUnits<A, B>>;
+export type SafeDiv<A, B> = HasScaleConflict<A, B> extends true ? never : DivideUnits<A, B>;
 
 export const qty = <S extends string = "">(value: number, _unit?: S): Unit<S> =>
   value as unknown as Unit<S>;
