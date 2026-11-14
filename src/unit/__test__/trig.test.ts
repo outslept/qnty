@@ -2,7 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { Measure } from "../../measure/measure.ts";
 import { degrees, piRadians } from "../angle.ts";
 import { kilograms, meters, radians, seconds } from "../base.ts";
-import { gibi, kibi, bytes } from "../memory.ts";
+import { bytes, gibi, kibi } from "../memory.ts";
 import { atto, kilo, newtons } from "../metric.ts";
 import * as Trig from "../trig.ts";
 
@@ -29,5 +29,14 @@ describe("SI base, metric, memory, and trig units", () => {
       Measure.of(45, degrees).value,
       10,
     );
+
+    // @ts-expect-error sin requires radians angle
+    Trig.sin(meters);
+
+    // @ts-expect-error acos requires dimensionless input
+    Trig.acos(radians);
+
+    // @ts-expect-error atan2 requires matching units
+    Trig.atan2(meters, seconds);
   });
 });
