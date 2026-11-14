@@ -94,7 +94,7 @@ export type CleanUnit<U> = {
   readonly [K in keyof U as U[K] extends 0 ? never : K]: U[K];
 } & {};
 
-export type MultiplyUnits<A extends UnitVec, B extends UnitVec> = CleanUnit<{
+export type MultiplyUnits<A, B> = CleanUnit<{
   [K in keyof A | keyof B]: K extends keyof A
     ? K extends keyof B
       ? AddExp<A[K], B[K]>
@@ -104,7 +104,7 @@ export type MultiplyUnits<A extends UnitVec, B extends UnitVec> = CleanUnit<{
       : never;
 }>;
 
-export type DivideUnits<A extends UnitVec, B extends UnitVec> = CleanUnit<{
+export type DivideUnits<A, B> = CleanUnit<{
   [K in keyof A | keyof B]: K extends keyof A
     ? K extends keyof B
       ? SubExp<A[K], B[K]>
@@ -114,19 +114,19 @@ export type DivideUnits<A extends UnitVec, B extends UnitVec> = CleanUnit<{
       : never;
 }>;
 
-export type PowUnit<U extends UnitVec, E extends number> = E extends 0
+export type PowUnit<U, E extends number> = E extends 0
   ? Dimensionless
   : CleanUnit<{
       [K in keyof U]: MulExp<U[K], E>;
     }>;
 
-export type RootUnit<U extends UnitVec, R extends number> = true extends {
+export type RootUnit<U, R extends number> = true extends {
   [K in keyof U]: [DivExp<U[K], R>] extends [never] ? true : false;
 }[keyof U]
   ? never
   : CleanUnit<{ [K in keyof U]: DivExp<U[K], R> }>;
 
-export type ReciprocalUnit<U extends UnitVec> = PowUnit<U, -1>;
-export type SquareUnit<U extends UnitVec> = PowUnit<U, 2>;
-export type CubeUnit<U extends UnitVec> = PowUnit<U, 3>;
-export type SqrtUnit<U extends UnitVec> = RootUnit<U, 2>;
+export type ReciprocalUnit<U> = PowUnit<U, -1>;
+export type SquareUnit<U> = PowUnit<U, 2>;
+export type CubeUnit<U> = PowUnit<U, 3>;
+export type SqrtUnit<U> = RootUnit<U, 2>;
