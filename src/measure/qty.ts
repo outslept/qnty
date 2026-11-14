@@ -124,7 +124,6 @@ export function format<S extends string>(
   unit: S,
   formatValue: (n: number) => string = String,
 ): string {
-  // const u = formatUnit( { ...(typeof unit === 'string' ? {} : {}) } );
   const suffix = unit.trim();
   return suffix
     ? `${formatValue(value as unknown as number)} ${suffix}`
