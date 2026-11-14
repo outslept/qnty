@@ -1,0 +1,42 @@
+import { Measure } from "../measure/measure.ts";
+
+export type PrefixFn = <U>(measure: Measure<U>) => Measure<U>;
+
+export const hertz = Measure.of(1, "Hz", "Hz");
+export const newtons = Measure.of(1, "N", "N");
+export const pascals = Measure.of(1, "Pa", "Pa");
+export const joules = Measure.of(1, "J", "J");
+export const watts = Measure.of(1, "W", "W");
+export const volts = Measure.of(1, "V", "V");
+export const coulombs = Measure.of(1, "C", "C");
+export const farads = Measure.of(1, "F", "F");
+export const ohms = Measure.of(1, "Ω", "Ω");
+export const siemens = Measure.of(1, "S", "S");
+export const henrys = Measure.of(1, "H", "H");
+export const webers = Measure.of(1, "Wb", "Wb");
+export const teslas = Measure.of(1, "T", "T");
+export const sieverts = Measure.of(1, "Sv", "Sv");
+export const katals = Measure.of(1, "kat", "kat");
+export const lumens = Measure.of(1, "lm", "lm");
+export const luxes = Measure.of(1, "lx", "lx");
+
+export const yotta: PrefixFn = Measure.prefix("Y", 1e24);
+export const zetta: PrefixFn = Measure.prefix("Z", 1e21);
+export const exa: PrefixFn = Measure.prefix("E", 1e18);
+export const peta: PrefixFn = Measure.prefix("P", 1e15);
+export const tera: PrefixFn = Measure.prefix("T", 1e12);
+export const giga: PrefixFn = Measure.prefix("G", 1e9);
+export const mega: PrefixFn = Measure.prefix("M", 1e6);
+export const kilo: PrefixFn = Measure.prefix("k", 1e3);
+export const hecto: PrefixFn = Measure.prefix("h", 100);
+export const deca: PrefixFn = Measure.prefix("da", 10);
+export const deci: PrefixFn = Measure.prefix("d", 0.1);
+export const centi: PrefixFn = Measure.prefix("c", 0.01);
+export const milli: PrefixFn = Measure.prefix("m", 1e-3);
+export const micro: PrefixFn = Measure.prefix("µ", 1e-6);
+export const nano: PrefixFn = Measure.prefix("n", 1e-9);
+export const pico: PrefixFn = Measure.prefix("p", 1e-12);
+export const femto: PrefixFn = Measure.prefix("f", 1e-15);
+export const atto: PrefixFn = Measure.prefix("a", 1e-18);
+export const zepto: PrefixFn = Measure.prefix("z", 1e-21);
+export const yocto: PrefixFn = Measure.prefix("y", 1e-24);
