@@ -1,5 +1,5 @@
 import { describe, expectTypeOf, it } from "vite-plus/test";
-import { add, div, mul, qty, sqrt, to, type Unit } from "../qty.ts";
+import { add, cbrt, div, mul, qty, sqrt, to, type Unit } from "../qty.ts";
 
 describe("zero-cost Qty type safety", () => {
   it("propagates dimensions through arithmetic and matches SI aliases", () => {
@@ -22,8 +22,14 @@ describe("zero-cost Qty type safety", () => {
     // @ts-expect-error cannot take square root of odd power
     sqrt(qty(9, "m"));
 
+    // @ts-expect-error cannot take cube root of non-multiple of 3 power
+    cbrt(qty(8, "m^2"));
+
     // @ts-expect-error cannot multiply km and m without converting first
     mul(qty(2, "km"), qty(500, "m"));
+
+    // @ts-expect-error cannot divide km by m without converting first
+    div(qty(2, "km"), qty(500, "m"));
 
     // @ts-expect-error cannot convert velocity into mass
     to(qty(60, "mi/hr"), "mi/hr", "kg");

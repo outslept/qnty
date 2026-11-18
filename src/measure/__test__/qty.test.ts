@@ -61,6 +61,7 @@ describe("zero-cost Qty runtime operations", () => {
     expect(max(qty(5, "m"), qty(2, "m"))).toBe(5);
     expect(to(qty(100, "degC"), "degC", "degF")).toBeCloseTo(212, 5);
     expect(format(qty(9.81, "m/s^2"), "m/s^2")).toBe("9.81 m/s^2");
+    expect(format(qty(9.81, "m/s^2"), "m/s^2", (n) => n.toFixed(1))).toBe("9.8 m/s^2");
     expect(format(qty(42, ""), "")).toBe("42");
   });
 });
