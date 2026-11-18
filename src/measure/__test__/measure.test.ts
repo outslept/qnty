@@ -12,6 +12,7 @@ describe("fluent Measure class", () => {
     const force = Measure.of(5, kg).times(speed.div(Measure.of(2, s)));
 
     expect(speed.value).toBe(10);
+    expect(Measure.of(100, m).per(Measure.of(10, s)).value).toBe(10);
     expect(speed.toString()).toBe("10 m / s");
     expect(force.toString()).toBe("25 kg * m / s^2");
     expectTypeOf(force.toQty()).toEqualTypeOf<Unit<"N">>();
@@ -22,6 +23,7 @@ describe("fluent Measure class", () => {
     expect(Measure.of(10, m).scale(3).value).toBe(30);
     expect(Measure.of(2, m).cubed().value).toBe(8);
     expect(Measure.of(5, m).pow(0)).toEqual(Measure.dimensionless(1));
+    expect(Measure.of(4, s).inverse().value).toBe(0.25);
     expect(Measure.of(4, s).reciprocal().value).toBe(0.25);
     expect(speed.squared().sqrt().value).toBe(10);
   });
@@ -45,12 +47,14 @@ describe("fluent Measure class", () => {
     const km = kilo(m);
     const dist = Measure.of(2500, m);
 
+    expect(kilo(m.withSymbol(undefined)).symbol).toBeUndefined();
     expect(dist.valueIn(km)).toBe(2.5);
     expect(dist.in(km)).toBe("2.5 km");
     expect(dist.valueIn("km")).toBe(2.5);
     expect(dist.in("km")).toBe("2.5 km");
     expect(dist.in(km.withSymbol(undefined))).toBe("2500 m");
     expect(dist.in(km, { formatValue: (v) => v.toFixed(2) })).toBe("2.50 km");
+    expect(dist.toString({ formatUnit: () => "meters" })).toBe("2500 meters");
     expect(Measure.of(100, "degC").valueIn("degF")).toBeCloseTo(212, 5);
   });
 
