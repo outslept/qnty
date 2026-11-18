@@ -5,7 +5,14 @@ describe("type-level unit string parser", () => {
   it("parses base, compound, parenthesized, and unicode units", () => {
     expectTypeOf<ParseUnit<"">>().toEqualTypeOf<{}>();
     expectTypeOf<ParseUnit<"1/s">>().toEqualTypeOf<{ readonly s: -1 }>();
+    expectTypeOf<ParseUnit<"1^2 / s">>().toEqualTypeOf<{ readonly s: -1 }>();
+    expectTypeOf<ParseUnit<"s⁻¹">>().toEqualTypeOf<{ readonly s: -1 }>();
     expectTypeOf<ParseUnit<"kg * m / s^2">>().toEqualTypeOf<{
+      readonly kg: 1;
+      readonly m: 1;
+      readonly s: -2;
+    }>();
+    expectTypeOf<ParseUnit<"kg ⋅ m ⋅ s⁻²">>().toEqualTypeOf<{
       readonly kg: 1;
       readonly m: 1;
       readonly s: -2;

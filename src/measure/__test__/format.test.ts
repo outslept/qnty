@@ -5,6 +5,9 @@ describe("runtime parseUnit and formatUnit", () => {
   it("parses and normalizes unit strings", () => {
     expect(parseUnit("")).toEqual({});
     expect(parseUnit("1/s")).toEqual({ s: -1 });
+    expect(parseUnit("1^2 / s")).toEqual({ s: -1 });
+    expect(parseUnit("s⁻¹")).toEqual({ s: -1 });
+    expect(parseUnit("kg ⋅ m ⋅ s⁻²")).toEqual({ kg: 1, m: 1, s: -2 });
     expect(parseUnit("kg ⋅ m / s²")).toEqual({ kg: 1, m: 1, s: -2 });
     expect(parseUnit("m^2 / (kg * s^2)")).toEqual({ m: 2, kg: -1, s: -2 });
     expect(parseUnit("m * s / s")).toEqual({ m: 1 });
@@ -13,6 +16,7 @@ describe("runtime parseUnit and formatUnit", () => {
 
   it("formats unit vectors canonically and round-trips with parseUnit", () => {
     expect(formatUnit({})).toBe("");
+    expect(formatUnit({ m: 0, s: 1 })).toBe("s");
     expect(formatUnit({ m: 1 })).toBe("m");
     expect(formatUnit({ s: -1 })).toBe("s^-1");
     expect(formatUnit({ m: -3, s: -2 })).toBe("m^-3 * s^-2");
